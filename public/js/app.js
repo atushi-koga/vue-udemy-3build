@@ -48995,9 +48995,13 @@ module.exports = function(module) {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -49023,10 +49027,86 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+
 var app = new Vue({
   el: '#app',
+  props: {
+    searchedWord: {
+      type: String,
+      "default": ''
+    }
+  },
   data: {
-    message: 'hello vue'
+    message: 'hello vue',
+    searchWord: 'cat',
+    searchResult: [],
+    loading: false,
+    cartItems: [],
+    total: 0
+  },
+  computed: {
+    resultCount: function resultCount() {
+      return this.searchResult.length;
+    },
+    totalPrice: function totalPrice() {
+      var total = 0;
+      this.cartItems.forEach(function (elem) {
+        total += elem.price * elem.count;
+      });
+      return total;
+    }
+  },
+  methods: {
+    search: function search() {
+      var _this = this;
+
+      this.loading = true;
+      this.searchedWord = this.searchWord;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/search?word=' + this.searchWord).then(function (res) {
+        _this.searchResult = res.data;
+      })["catch"](function (error) {
+        alert('error');
+      })["finally"](function () {
+        _this.loading = false;
+        console.log('finish');
+      });
+    },
+    addItemToCart: function addItemToCart(item) {
+      var index = this.cartItems.findIndex(function (elem) {
+        return item.id === elem.id;
+      });
+
+      if (index === -1) {
+        this.cartItems.push({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          count: 1
+        });
+      } else {
+        this.cartItems[index].count++;
+      }
+    },
+    addItemOfCart: function addItemOfCart(item) {
+      var index = this.cartItems.findIndex(function (elem) {
+        return item.id === elem.id;
+      });
+      this.cartItems[index].count++;
+    },
+    reduceItemOfCart: function reduceItemOfCart(item) {
+      var index = this.cartItems.findIndex(function (elem) {
+        return item.id === elem.id;
+      });
+
+      if (this.cartItems[index].count === 1) {
+        this.cartItems.splice(index, 1);
+      } else {
+        this.cartItems[index].count--;
+      }
+    }
+  },
+  created: function created() {
+    this.search();
   }
 });
 

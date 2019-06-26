@@ -27,9 +27,89 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+import axios from 'axios';
+
 const app = new Vue({
     el: '#app',
+    props: {
+        searchedWord: {
+            type: String,
+            default: ''
+        }
+    },
     data: {
-        message: 'hello vue'
+        message: 'hello vue',
+        searchWord: 'cat',
+        searchResult: [],
+        loading: false,
+        cartItems: [],
+        total: 0
+    },
+    computed: {
+        resultCount: function () {
+            return this.searchResult.length;
+        },
+        totalPrice: function(){
+            var total = 0;
+            this.cartItems.forEach(function(elem){
+                total += elem.price * elem.count;
+            });
+
+            return total;
+        }
+    },
+    methods: {
+        search: function () {
+            this.loading = true;
+            this.searchedWord = this.searchWord;
+            axios.get('/api/search?word=' + this.searchWord)
+                .then((res) => {
+                    this.searchResult = res.data;
+                })
+                .catch((error) => {
+                    alert('error');
+
+                })
+                .finally(() => {
+                    this.loading = false;
+                    console.log('finish');
+                });
+        },
+        addItemToCart: function(item){
+            var index = this.cartItems.findIndex(function(elem){
+                return item.id === elem.id;
+            });
+
+            if(index === -1){
+                this.cartItems.push({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    count: 1
+                });
+            }else{
+                this.cartItems[index].count++;
+            }
+        },
+        addItemOfCart: function(item){
+            var index = this.cartItems.findIndex(function(elem){
+                return item.id === elem.id;
+            });
+            this.cartItems[index].count++;
+        },
+        reduceItemOfCart: function(item){
+            var index = this.cartItems.findIndex(function(elem){
+                return item.id === elem.id;
+            });
+
+            if(this.cartItems[index].count === 1){
+                this.cartItems.splice(index, 1);
+            }else{
+                this.cartItems[index].count--;
+            }
+        }
+    },
+    created: function () {
+        this.search();
     }
 });
