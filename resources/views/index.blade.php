@@ -46,7 +46,7 @@
         </div>
 
         <!-- search result -->
-        <div class="product" v-for="item in searchResult" :key="item.id">
+        <div class="product" v-for="item in products" :key="item.id">
           <div>
             <div class="product-image">
               <img :src="item.image_path">
@@ -58,8 +58,8 @@
             <button class="add-to-cart btn" @click="addItemToCart(item)">Add to cart</button>
           </div>
         </div>
-        <div id="product-list-bottom"><!----></div>
       </div>
+      <div id="product-list-bottom"></div>
 
       <!-- shopping cart -->
       <div class="cart">

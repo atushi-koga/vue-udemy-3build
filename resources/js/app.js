@@ -28,6 +28,10 @@ window.Vue = require('vue');
  */
 
 import axios from 'axios';
+import scrollMonitor from 'scrollmonitor';
+
+var LOAD_NUM = 4;
+var watcher;
 
 const app = new Vue({
     el: '#app',
@@ -35,6 +39,7 @@ const app = new Vue({
         searchWord: 'cat',
         lastSearchWord: '',
         searchResult: [],
+        products: [],
         loading: false,
         cartItems: [],
         total: 0
@@ -56,6 +61,7 @@ const app = new Vue({
             axios.get('/api/search?word='.concat(this.searchWord))
                 .then((res) => {
                     this.searchResult = res.data;
+                    this.products = res.data.slice(0, LOAD_NUM);
                 })
                 .catch((error) => {
                     alert('error');
@@ -63,7 +69,6 @@ const app = new Vue({
                 })
                 .finally(() => {
                     this.loading = false;
-                    console.log('finish');
                 });
         },
         addItemToCart: function(item){
@@ -93,6 +98,9 @@ const app = new Vue({
                 var index = this.cartItems.indexOf(item);
                 this.cartItems.splice(index, 1);
             }
+        },
+        appendResults: function(){
+            console.log('appendresult');
         }
     },
     filters: {
@@ -102,5 +110,16 @@ const app = new Vue({
     },
     created: function () {
         this.search();
+    },
+    beforeUpdate: function(){
+        if(watcher){
+            watcher.destroy();
+            watcher = null;
+        }
+    },
+    updated: function(){
+        var sensor = document.querySelector("#product-list-bottom");
+        watcher = scrollMonitor.create(sensor);
+        watcher.enterViewport(this.appendResults);
     }
 });
