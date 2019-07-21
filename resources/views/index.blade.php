@@ -20,8 +20,8 @@
 </head>
 <body>
 <div class="content">
-  <div id="app">
-    {{--<div id="loading">Loading...</div>--}}
+  <div id="app" v-cloak>
+    <div id="loading">Loading...</div>
     <div class="header">
       <div class="container">
         <div class="title">

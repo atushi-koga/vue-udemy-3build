@@ -6,3 +6,15 @@
     transition: opacity .5s;
 }
 
+[v-cloak] :not(#loading) {
+    display: none !important;
+}
+
+[v-cloak] > #loading {
+    display: block;
+    padding: 1em;
+}
+
+#loading {
+    display: none;
+}

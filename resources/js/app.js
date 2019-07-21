@@ -60,16 +60,16 @@ const app = new Vue({
             this.lastSearchWord = this.searchWord;
             axios.get('/api/search?word='.concat(this.searchWord))
                 .then((res) => {
-                    this.searchResult = res.data;
-                    this.products = res.data.slice(0, LOAD_NUM);
-                })
-                .catch((error) => {
-                    alert('error');
+                this.searchResult = res.data;
+            this.products = res.data.slice(0, LOAD_NUM);
+        })
+        .catch((error) => {
+                alert('error');
 
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
+        })
+        .finally(() => {
+                this.loading = false;
+        });
         },
         addItemToCart: function(item){
             var isFounded = false;
@@ -104,9 +104,9 @@ const app = new Vue({
         }
     },
     filters: {
-      currency: function(price){
-          return "$".concat(price.toFixed(2));
-      }
+        currency: function(price){
+            return "$".concat(price.toFixed(2));
+        }
     },
     created: function () {
         this.search();
@@ -123,3 +123,4 @@ const app = new Vue({
         watcher.enterViewport(this.appendResults);
     }
 });
+

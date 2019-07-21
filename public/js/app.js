@@ -49044,6 +49044,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 
 var LOAD_NUM = 4;
+var watcher;
 var app = new Vue({
   el: '#app',
   data: {
@@ -49121,20 +49122,16 @@ var app = new Vue({
   created: function created() {
     this.search();
   },
-  // beforeUpdate: function(){
-  //     if(watcher){
-  //         watcher.destroy();
-  //         watcher = null;
-  //     }
-  // },
-  mounted: function mounted() {
-    var sensor = document.getElementById("product-list-bottom");
-    console.log(sensor);
-    var watcher = scrollmonitor__WEBPACK_IMPORTED_MODULE_1___default.a.create(sensor);
-    console.log(watcher);
-    watcher.enterViewport(function () {
-      console.log('tets');
-    });
+  beforeUpdate: function beforeUpdate() {
+    if (watcher) {
+      watcher.destroy();
+      watcher = null;
+    }
+  },
+  updated: function updated() {
+    var sensor = document.querySelector("#product-list-bottom");
+    watcher = scrollmonitor__WEBPACK_IMPORTED_MODULE_1___default.a.create(sensor);
+    watcher.enterViewport(this.appendResults);
   }
 });
 
