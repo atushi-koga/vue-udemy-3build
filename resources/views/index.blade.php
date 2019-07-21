@@ -15,6 +15,7 @@
   {{--<link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">--}}
 
   <link rel="stylesheet" type="text/css" href="/style.css">
+  <link rel="stylesheet" type="text/css" href="/search.css">
   {{--<link rel="stylesheet" href="{{ mix('/css/app.css') }}">--}}
 </head>
 <body>
@@ -63,20 +64,22 @@
       <!-- shopping cart -->
       <div class="cart">
         <h2>Shopping Cart</h2>
-        <div v-if="cartItems.length">
-          <ul v-for="cartItem in cartItems" :key="cartItem.id">
-            <li class="cart-item">
-              <div class="item-title">@{{ cartItem.name }}</div>
-              <span class="item-qty">@{{ cartItem.price | currency }} x @{{ cartItem.count }}</span>
-              <button class="btn" @click="addItemOfCart(cartItem)">+</button>
-              <button class="btn" @click="reduceItemOfCart(cartItem)">-</button>
-            </li>
-          </ul>
-          <div>
+        <div v-if="cartItems.length === 0" class="empty-cart">
+          No items in the cart
+        </div>
+        <transition-group tag="ul" name="fade">
+          <li class="cart-item" v-for="cartItem in cartItems" :key="cartItem.id">
+            <div class="item-title">@{{ cartItem.name }}</div>
+            <span class="item-qty">@{{ cartItem.price | currency }} x @{{ cartItem.count }}</span>
+            <button class="btn" @click="addItemOfCart(cartItem)">+</button>
+            <button class="btn" @click="reduceItemOfCart(cartItem)">-</button>
+          </li>
+        </transition-group>
+        <transition name="fade">
+          <div v-if="cartItems.length">
             <div class="cart-total">Total: @{{ totalPrice | currency }}</div>
           </div>
-        </div>
-        <div v-else>No items in the cart</div>
+        </transition>
       </div>
     </div>
   </div>
