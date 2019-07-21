@@ -49091,12 +49091,6 @@ var app = new Vue({
       }
     },
     addItemOfCart: function addItemOfCart(item) {
-      // for(var i = 0; i < this.cartItems.length; i++){
-      //     if(this.cartItems[i].id === item.id){
-      //         this.cartItems[i].count++;
-      //         break;
-      //     }
-      // }
       item.count++;
     },
     reduceItemOfCart: function reduceItemOfCart(item) {
@@ -49104,19 +49098,8 @@ var app = new Vue({
 
       if (item.count <= 0) {
         var index = this.cartItems.indexOf(item);
-        console.log(index);
         this.cartItems.splice(index, 1);
-      } // for(var i = 0; i < this.cartItems.length; i++){
-      //     if(this.cartItems[i].id === item.id){
-      //         if(this.cartItems[i].count === 1){
-      //             this.cartItems.splice(i, 1);
-      //         }else{
-      //             this.cartItems[i].count--;
-      //         }
-      //         break;
-      //     }
-      // }
-
+      }
     }
   },
   filters: {

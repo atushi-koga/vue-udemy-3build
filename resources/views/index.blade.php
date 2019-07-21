@@ -28,10 +28,10 @@
           <img src="/logo.png">
           <h1>Vue.js Poster Shop</h1>
         </div>
-        <form class="search-bar">
+        <form class="search-bar" @submit.prevent="search">
           <input type="text" placeholder="Search for posters" v-model="searchWord" required="required"
                  autocapitalize="off" autocorrect="off">
-          <button type="button" @click="search" value="Search" class="btn btn-success">Search</button>
+          <button type="submit" class="btn btn-success">Search</button>
         </form>
         <p>Try search terms <em>cat, dog, flower</em></p></div>
     </div>

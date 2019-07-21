@@ -38,7 +38,6 @@ const app = new Vue({
         }
     },
     data: {
-        message: 'hello vue',
         searchWord: 'cat',
         searchResult: [],
         loading: false,
