@@ -49072,37 +49072,49 @@ var app = new Vue({
       });
     },
     addItemToCart: function addItemToCart(item) {
-      var index = this.cartItems.findIndex(function (elem) {
-        return item.id === elem.id;
-      });
+      var isFounded = false;
 
-      if (index === -1) {
+      for (var i = 0; i < this.cartItems.length; i++) {
+        if (this.cartItems[i].id === item.id) {
+          this.cartItems[i].count++;
+          isFounded = true;
+        }
+      }
+
+      if (!isFounded) {
         this.cartItems.push({
           id: item.id,
           name: item.name,
           price: item.price,
           count: 1
         });
-      } else {
-        this.cartItems[index].count++;
       }
     },
     addItemOfCart: function addItemOfCart(item) {
-      var index = this.cartItems.findIndex(function (elem) {
-        return item.id === elem.id;
-      });
-      this.cartItems[index].count++;
+      for (var i = 0; i < this.cartItems.length; i++) {
+        if (this.cartItems[i].id === item.id) {
+          this.cartItems[i].count++;
+          break;
+        }
+      }
     },
     reduceItemOfCart: function reduceItemOfCart(item) {
-      var index = this.cartItems.findIndex(function (elem) {
-        return item.id === elem.id;
-      });
+      for (var i = 0; i < this.cartItems.length; i++) {
+        if (this.cartItems[i].id === item.id) {
+          if (this.cartItems[i].count === 1) {
+            this.cartItems.splice(i, 1);
+          } else {
+            this.cartItems[i].count--;
+          }
 
-      if (this.cartItems[index].count === 1) {
-        this.cartItems.splice(index, 1);
-      } else {
-        this.cartItems[index].count--;
+          break;
+        }
       }
+    }
+  },
+  filters: {
+    currency: function currency(price) {
+      return "$".concat(price.toFixed(2));
     }
   },
   created: function created() {

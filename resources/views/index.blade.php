@@ -3,11 +3,12 @@
 <head>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta charset="utf-8">
-  <meta name="referrer" content="never" />
+  <meta name="referrer" content="never"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vue.js Poster Shop</title>
   <link rel="shortcut icon" type="image/x-icon" href="/public/favicon.ico">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,700,800" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,700,800" rel="stylesheet"
+        type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina" rel="stylesheet">
 
   <!-- Fonts -->
@@ -24,18 +25,19 @@
       <div class="container">
         <div class="title">
           {{--<img src="public/logo.png">--}}
-          <img src="/api/csrf">
+          <img src="/logo.png">
           <h1>Vue.js Poster Shop</h1>
         </div>
         <form class="search-bar">
-          <input type="text" placeholder="Search for posters" v-model="searchWord" required="required" autocapitalize="off" autocorrect="off">
+          <input type="text" placeholder="Search for posters" v-model="searchWord" required="required"
+                 autocapitalize="off" autocorrect="off">
           <button type="button" @click="search" value="Search" class="btn btn-success">Search</button>
         </form>
         <p>Try search terms <em>cat, dog, flower</em></p></div>
     </div>
 
     <div class="main container">
-      <div v-if="loading">Loading...</div>
+      <div v-if="loading" class="products">Loading...</div>
       <div v-else class="products">
         <div class="search-results">
           Found @{{ resultCount }} results for search term <em>@{{ searchedWord }}</em>.
@@ -45,11 +47,12 @@
         <div class="product" v-for="item in searchResult" :key="item.id">
           <div>
             <div class="product-image">
-              {{--<img src="/public/images/cat1.jpg">--}}
+              <img :src="item.image_path">
             </div>
           </div>
-          <div><h4 class="product-title">@{{ item.name }}</h4>
-            <p class="product-price"><strong>$@{{ item.price }}</strong></p>
+          <div>
+            <h4 class="product-title">@{{ item.name }}</h4>
+            <p class="product-price"><strong>@{{ item.price | currency }}</strong></p>
             <button class="add-to-cart btn" @click="addItemToCart(item)">Add to cart</button>
           </div>
         </div>
@@ -59,17 +62,20 @@
       <!-- shopping cart -->
       <div class="cart">
         <h2>Shopping Cart</h2>
-        <ul v-for="cartItem in cartItems" :key="cartItem.id">
-          <li class="cart-item">
-            <div class="item-title">@{{ cartItem.name }}</div>
-            <span class="item-qty">$@{{ cartItem.price }} x @{{ cartItem.count }}</span>
-            <button class="btn" @click="addItemOfCart(cartItem)">+</button>
-            <button class="btn" @click="reduceItemOfCart(cartItem)">-</button>
-          </li>
-        </ul>
-        <div>
-          <div class="cart-total">Total: $@{{ totalPrice }}</div>
+        <div v-if="cartItems.length">
+          <ul v-for="cartItem in cartItems" :key="cartItem.id">
+            <li class="cart-item">
+              <div class="item-title">@{{ cartItem.name }}</div>
+              <span class="item-qty">@{{ cartItem.price | currency }} x @{{ cartItem.count }}</span>
+              <button class="btn" @click="addItemOfCart(cartItem)">+</button>
+              <button class="btn" @click="reduceItemOfCart(cartItem)">-</button>
+            </li>
+          </ul>
+          <div>
+            <div class="cart-total">Total: @{{ totalPrice | currency }}</div>
+          </div>
         </div>
+        <div v-else>No items in the cart</div>
       </div>
     </div>
   </div>
