@@ -31,23 +31,15 @@ import axios from 'axios';
 
 const app = new Vue({
     el: '#app',
-    props: {
-        searchedWord: {
-            type: String,
-            default: ''
-        }
-    },
     data: {
         searchWord: 'cat',
+        lastSearchWord: '',
         searchResult: [],
         loading: false,
         cartItems: [],
         total: 0
     },
     computed: {
-        resultCount: function () {
-            return this.searchResult.length;
-        },
         totalPrice: function(){
             var total = 0;
             this.cartItems.forEach(function(elem){
@@ -60,8 +52,8 @@ const app = new Vue({
     methods: {
         search: function () {
             this.loading = true;
-            this.searchedWord = this.searchWord;
-            axios.get('/api/search?word=' + this.searchWord)
+            this.lastSearchWord = this.searchWord;
+            axios.get('/api/search?word='.concat(this.searchWord))
                 .then((res) => {
                     this.searchResult = res.data;
                 })

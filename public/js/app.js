@@ -49030,24 +49030,15 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 var app = new Vue({
   el: '#app',
-  props: {
-    searchedWord: {
-      type: String,
-      "default": ''
-    }
-  },
   data: {
-    message: 'hello vue',
     searchWord: 'cat',
+    lastSearchWord: '',
     searchResult: [],
     loading: false,
     cartItems: [],
     total: 0
   },
   computed: {
-    resultCount: function resultCount() {
-      return this.searchResult.length;
-    },
     totalPrice: function totalPrice() {
       var total = 0;
       this.cartItems.forEach(function (elem) {
@@ -49061,8 +49052,8 @@ var app = new Vue({
       var _this = this;
 
       this.loading = true;
-      this.searchedWord = this.searchWord;
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/search?word=' + this.searchWord).then(function (res) {
+      this.lastSearchWord = this.searchWord;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/search?word='.concat(this.searchWord)).then(function (res) {
         _this.searchResult = res.data;
       })["catch"](function (error) {
         alert('error');

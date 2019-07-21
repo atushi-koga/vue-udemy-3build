@@ -33,14 +33,15 @@
                  autocapitalize="off" autocorrect="off">
           <button type="submit" class="btn btn-success">Search</button>
         </form>
-        <p>Try search terms <em>cat, dog, flower</em></p></div>
+        <p>Try search terms <em>cat, dog, flower</em></p>
+      </div>
     </div>
 
     <div class="main container">
       <div v-if="loading" class="products">Loading...</div>
       <div v-else class="products">
         <div class="search-results">
-          Found @{{ resultCount }} results for search term <em>@{{ searchedWord }}</em>.
+          Found @{{ searchResult.length }} results for search term <em>@{{ lastSearchWord }}</em>.
         </div>
 
         <!-- search result -->
